@@ -14,4 +14,21 @@ npm install convex pdf-parse
 git add .
 git commit -m "feat: Initialize project with Next.js 15, Storybook, ShadCN UI, and base dependencies"
 git add .
-git commit -m "feat: Configure global theming with Tailwind CSS and dark mode support" 
+git commit -m "feat: Configure global theming with Tailwind CSS and dark mode support"
+git add .
+git commit -m "feat: Add base Storybook layout with theme toggle and viewport support"
+
+# Remove node_modules and package-lock.json
+rm -rf node_modules package-lock.json
+
+# Clean npm cache
+npm cache clean --force
+
+# Install dependencies with React 18
+npm install --legacy-peer-deps
+
+# Start Storybook
+npm run storybook
+
+# Or using yarn
+yarn storybook 
