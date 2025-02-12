@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/react'
 import { ThemeProvider } from '../src/components/theme-provider'
 import '../src/app/globals.css'
+import { withClerk } from './clerk-decorator'
 
 const preview: Preview = {
   parameters: {
@@ -15,7 +16,14 @@ const preview: Preview = {
           styles: { width: '1440px', height: '800px' }
         }
       }
-    }
+    },
+    actions: { argTypesRegex: "^on[A-Z].*" },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
+    },
   },
   decorators: [
     (Story) => (
@@ -33,7 +41,8 @@ const preview: Preview = {
           <Story />
         </div>
       </ThemeProvider>
-    )
+    ),
+    withClerk
   ]
 }
 
