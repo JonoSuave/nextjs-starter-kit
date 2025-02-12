@@ -16,7 +16,7 @@ const config: Config = {
     "./src/**/*.{ts,tsx}",
   ],
   // Enabling dark mode
-  darkMode: "class", // Assuming you want to enable dark mode based on the class strategy
+  darkMode: ['class'],
   theme: {
     // Merging container configuration from the second file
     container: {
@@ -149,6 +149,9 @@ const config: Config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         "background-shine": "background-shine 2s linear infinite",
+      },
+      spacing: {
+        'sidebar-width': 'var(--sidebar-width)',
       },
     },
   },

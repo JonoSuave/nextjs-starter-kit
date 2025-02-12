@@ -1,0 +1,17 @@
+# Create Next.js 15 project with App Router and Tailwind
+npx create-next-app@latest my-pdf-app --typescript --tailwind --eslint
+
+# Install Storybook
+cd my-pdf-app
+npx storybook@latest init
+
+# Install ShadCN UI
+npx shadcn-ui@latest init
+
+# Install other dependencies
+npm install convex pdf-parse 
+
+git add .
+git commit -m "feat: Initialize project with Next.js 15, Storybook, ShadCN UI, and base dependencies"
+git add .
+git commit -m "feat: Configure global theming with Tailwind CSS and dark mode support" 
