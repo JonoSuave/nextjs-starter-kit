@@ -9,7 +9,7 @@ export default function Provider({ children }: { children: ReactNode }) {
 
   return (
     <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
-        {children}
+      {children}
     </ConvexProviderWithClerk>
   );
 }

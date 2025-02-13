@@ -1,10 +1,40 @@
-import { authMiddleware } from "@clerk/nextjs";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { fetchQuery } from "convex/nextjs";
+import { NextResponse } from "next/server";
+import { api } from "./convex/_generated/api";
 
-export default authMiddleware({
-  // Public routes that don't require authentication
-  publicRoutes: ["/", "/sign-in", "/sign-up"]
+// This example protects all routes including api/trpc routes
+// Please edit this to allow other routes to be public as needed.
+// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your middleware
+const isProtectedRoute = createRouteMatcher(["/dashboard(.*)"]);
+
+export default clerkMiddleware(async (auth, req) => {
+  const token = await (await auth()).getToken({ template: "convex" });
+
+  const { hasActiveSubscription } = await fetchQuery(
+    api.subscriptions.getUserSubscriptionStatus,
+    {},
+    {
+      token: token!,
+    }
+  );
+
+  const isDashboard = req.nextUrl.href.includes(`/dashboard`);
+
+  if (isDashboard && !hasActiveSubscription) {
+    const pricingUrl = new URL("/pricing", req.nextUrl.origin);
+    // Redirect to the pricing page
+    return NextResponse.redirect(pricingUrl);
+  }
+
+  if (isProtectedRoute(req)) await auth.protect();
 });
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
+  ],
 };
